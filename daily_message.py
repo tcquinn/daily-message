@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 import random
 import os
 import argparse
@@ -39,13 +40,37 @@ class MessageList:
         self.message_list_df.loc[selected_index, 'num_times_used'] += 1
         return(selected_message)
 
+def parse_html_template_file(
+    html_template_path,
+    target_html_path,
+    message_string):
+    message_re = re.compile('@message')
+    html_template = open(
+        html_template_path,
+        'r')
+    target_html = open(
+        target_html_path,
+        'w')
+    for input_line in html_template:
+        output_line = message_re.sub(message_string, input_line)
+        target_html.write(output_line)
+    html_template.close()
+    target_html.close()
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('message_list_path', type=str, help="Message list path (e.g., 'data/sample_message_list.csv')")
+    parser.add_argument('html_template_path', type=str, help="HTML template path (e.g., 'html/index_template.html')")
+    parser.add_argument('target_html_path', type=str, help="Target HTML path (e.g., 'html/index.html')")
     arguments = parser.parse_args()
 
     message_list_path = arguments.message_list_path
+    html_template_path = arguments.html_template_path
+    target_html_path = arguments.target_html_path
     print('message_list_path: {}'.format(message_list_path))
+    print('html_template_path: {}'.format(html_template_path))
+    print('target_html_path: {}'.format(target_html_path))
     message_list  = MessageList.from_csv_file(
         message_list_path)
     print('Successfully read message list:\n{}'.format(message_list.message_list_df))
@@ -54,3 +79,7 @@ if __name__ == '__main__':
     print('New message list:\n{}'.format(message_list.message_list_df))
     message_list.to_csv_file(
         message_list_path)
+    parse_html_template_file(
+        html_template_path,
+        target_html_path,
+        selected_message)
