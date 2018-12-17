@@ -13,27 +13,21 @@ class MessageList:
     @classmethod
     def from_csv_file(
         cls,
-        path,
-        filename):
+        path):
         message_list_df = pd.read_csv(
-            os.path.join(
-                path,
-                filename),
+            path,
             index_col=0)
         return cls(message_list_df)
 
     def to_csv_file(
         self,
-        path,
-        filename):
+        path):
         self.message_list_df.to_csv(
-            os.path.join(
-                path,
-                filename))
+            path)
 
     # Randomly select a message, return the body, and increment the number of times used
     def next_message(self):
-        print('Values for nmber of times used: {}'.format(self.message_list_df['num_times_used'].unique()))
+        print('Values for number of times used: {}'.format(self.message_list_df['num_times_used'].unique()))
         min_num_times_used = self.message_list_df['num_times_used'].min()
         print('Minimum number of times used: {}'.format(min_num_times_used))
         selectable_indices = self.message_list_df.index[self.message_list_df['num_times_used'] == min_num_times_used].tolist()
@@ -47,21 +41,16 @@ class MessageList:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('message_list_filename', type=str, help="Message list filename (e.g., 'sample_message_list.csv')")
-    parser.add_argument("-p", "--message-list-path", dest="message_list_path", help="Message list path (e.g., '.')", default=".")
+    parser.add_argument('message_list_path', type=str, help="Message list path (e.g., 'data/sample_message_list.csv')")
     arguments = parser.parse_args()
 
     message_list_path = arguments.message_list_path
     print('message_list_path: {}'.format(message_list_path))
-    message_list_filename = arguments.message_list_filename
-    print('message_list_filename: {}'.format(message_list_filename))
     message_list  = MessageList.from_csv_file(
-        message_list_path,
-        message_list_filename)
+        message_list_path)
     print('Successfully read message list:\n{}'.format(message_list.message_list_df))
     selected_message = message_list.next_message()
     print('Selected message: {}'.format(selected_message))
     print('New message list:\n{}'.format(message_list.message_list_df))
     message_list.to_csv_file(
-        message_list_path,
-        message_list_filename)
+        message_list_path)
