@@ -1,4 +1,5 @@
 import pandas as pd
+import boto3
 import s3fs
 import re
 import random
@@ -80,22 +81,45 @@ def parse_html_template_file(
     html_template.close()
     target_html.close()
 
+def parse_html_template_s3_object(
+    html_template_bucket_name,
+    html_template_object_name,
+    target_html_path,
+    message_string):
+    message_re = re.compile('@message')
+    s3 = boto3.resource('s3')
+    html_template_object = s3.Object(
+        html_template_bucket_name,
+        html_template_object_name)
+    html_template_string = html_template_object.get()['Body'].read().decode('utf-8')
+    print('HTML template string:\n{}'.format(html_template_string))
+    output_string = message_re.sub(message_string, html_template_string)
+    print('HTML output string:\n{}'.format(output_string))
+    target_html = open(
+        target_html_path,
+        'w')
+    target_html.write(output_string)
+    target_html.close()
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('message_list_bucket_name', type=str, help="Message list S3 bucket_name (e.g., 'daily-message')")
     parser.add_argument('message_list_object_name', type=str, help="Message list S3 object name (e.g., 'sample_message_list.csv')")
-    parser.add_argument('html_template_path', type=str, help="HTML template path (e.g., 'html/index_template.html')")
+    parser.add_argument('html_template_bucket_name', type=str, help="HTML template bucket name (e.g., 'daily-message')")
+    parser.add_argument('html_template_object_name', type=str, help="HTML template object name (e.g., 'index_template.html')")
     parser.add_argument('target_html_path', type=str, help="Target HTML path (e.g., 'html/index.html')")
     arguments = parser.parse_args()
 
     message_list_bucket_name = arguments.message_list_bucket_name
     message_list_object_name = arguments.message_list_object_name
-    html_template_path = arguments.html_template_path
+    html_template_bucket_name = arguments.html_template_bucket_name
+    html_template_object_name = arguments.html_template_object_name
     target_html_path = arguments.target_html_path
     print('message_list_bucket_name: {}'.format(message_list_bucket_name))
     print('message_list_object_name: {}'.format(message_list_object_name))
-    print('html_template_path: {}'.format(html_template_path))
+    print('html_template_bucket_name: {}'.format(html_template_bucket_name))
+    print('html_template_object_name: {}'.format(html_template_object_name))
     print('target_html_path: {}'.format(target_html_path))
     message_list  = MessageList.from_csv_s3_object(
         message_list_bucket_name,
@@ -107,7 +131,8 @@ if __name__ == '__main__':
     message_list.to_csv_s3_object(
         message_list_bucket_name,
         message_list_object_name)
-    parse_html_template_file(
-        html_template_path,
+    parse_html_template_s3_object(
+        html_template_bucket_name,
+        html_template_object_name,
         target_html_path,
         selected_message)
