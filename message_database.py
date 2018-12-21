@@ -7,6 +7,7 @@ import os
 class MessageDatabaseCSV:
     def next_message(self):
         message_list_df = self.get_dataframe()
+        print('Successfully retrieved message database:\n{}'.format(message_list_df))
         print('Values for number of times used: {}'.format(message_list_df['num_times_used'].unique()))
         min_num_times_used = message_list_df['num_times_used'].min()
         print('Minimum number of times used: {}'.format(min_num_times_used))
@@ -17,6 +18,7 @@ class MessageDatabaseCSV:
         selected_message = message_list_df.loc[selected_index, 'body']
         print('Selected message: {}'.format(selected_message))
         message_list_df.loc[selected_index, 'num_times_used'] += 1
+        print('New message database:\n{}'.format(message_list_df))
         self.put_dataframe(message_list_df)
         return(selected_message)
 

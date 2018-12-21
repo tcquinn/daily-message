@@ -28,10 +28,8 @@ if __name__ == '__main__':
     message_database  = message_database.MessageDatabaseCSVS3(
         message_list_bucket_name,
         message_list_object_name)
-    print('Successfully read message list:\n{}'.format(message_database.get_dataframe()))
     selected_message = message_database.next_message()
     print('Selected message: {}'.format(selected_message))
-    print('New message list:\n{}'.format(message_database.get_dataframe()))
     daily_message.parse_html_template_s3_object(
         html_template_bucket_name,
         html_template_object_name,
