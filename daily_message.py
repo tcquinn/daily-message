@@ -85,7 +85,7 @@ def parse_html_template_s3_object(
     html_template_bucket_name,
     html_template_object_name,
     target_html_bucket_name,
-    target_html_obkect_name,
+    target_html_object_name,
     message_string):
     s3 = boto3.resource('s3')
     html_template_object = s3.Object(
