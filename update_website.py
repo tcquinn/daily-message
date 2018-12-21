@@ -25,16 +25,13 @@ if __name__ == '__main__':
     print('html_template_object_name: {}'.format(html_template_object_name))
     print('target_html_bucket_name: {}'.format(target_html_bucket_name))
     print('target_html_object_name: {}'.format(target_html_object_name))
-    message_list  = message_database.MessageList.from_csv_s3_object(
+    message_database  = message_database.MessageDatabaseCSVS3(
         message_list_bucket_name,
         message_list_object_name)
-    print('Successfully read message list:\n{}'.format(message_list.message_list_df))
-    selected_message = message_list.next_message()
+    print('Successfully read message list:\n{}'.format(message_database.get_dataframe()))
+    selected_message = message_database.next_message()
     print('Selected message: {}'.format(selected_message))
-    print('New message list:\n{}'.format(message_list.message_list_df))
-    message_list.to_csv_s3_object(
-        message_list_bucket_name,
-        message_list_object_name)
+    print('New message list:\n{}'.format(message_database.get_dataframe()))
     daily_message.parse_html_template_s3_object(
         html_template_bucket_name,
         html_template_object_name,
