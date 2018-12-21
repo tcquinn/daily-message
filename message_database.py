@@ -1,6 +1,7 @@
 import pandas as pd
 import boto3
 import s3fs
+import random
 import os
 
 class MessageList:
@@ -46,3 +47,17 @@ class MessageList:
         s3_location = bucket_name +'/' + object_name
         with s3.open(s3_location,'w') as f:
             self.message_list_df.to_csv(f)
+
+    # Randomly select a message, return the body, and increment the number of times used
+    def next_message(self):
+        print('Values for number of times used: {}'.format(self.message_list_df['num_times_used'].unique()))
+        min_num_times_used = self.message_list_df['num_times_used'].min()
+        print('Minimum number of times used: {}'.format(min_num_times_used))
+        selectable_indices = self.message_list_df.index[self.message_list_df['num_times_used'] == min_num_times_used].tolist()
+        print('Selectable indices: {}'.format(selectable_indices))
+        selected_index = random.choice(selectable_indices)
+        print('Selected index: {}'.format(selected_index))
+        selected_message = self.message_list_df.loc[selected_index, 'body']
+        print('Selected message: {}'.format(selected_message))
+        self.message_list_df.loc[selected_index, 'num_times_used'] += 1
+        return(selected_message)

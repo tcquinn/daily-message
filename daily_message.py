@@ -2,23 +2,7 @@ import pandas as pd
 import boto3
 import s3fs
 import re
-import random
 import os
-
-
-# Randomly select a message, return the body, and increment the number of times used
-def next_message(message_list):
-    print('Values for number of times used: {}'.format(message_list.message_list_df['num_times_used'].unique()))
-    min_num_times_used = message_list.message_list_df['num_times_used'].min()
-    print('Minimum number of times used: {}'.format(min_num_times_used))
-    selectable_indices = message_list.message_list_df.index[message_list.message_list_df['num_times_used'] == min_num_times_used].tolist()
-    print('Selectable indices: {}'.format(selectable_indices))
-    selected_index = random.choice(selectable_indices)
-    print('Selected index: {}'.format(selected_index))
-    selected_message = message_list.message_list_df.loc[selected_index, 'body']
-    print('Selected message: {}'.format(selected_message))
-    message_list.message_list_df.loc[selected_index, 'num_times_used'] += 1
-    return(selected_message)
 
 def parse_html_template_file(
     html_template_path,
