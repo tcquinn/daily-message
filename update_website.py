@@ -1,4 +1,5 @@
 import daily_message
+import database
 import os
 import argparse
 
@@ -24,11 +25,11 @@ if __name__ == '__main__':
     print('html_template_object_name: {}'.format(html_template_object_name))
     print('target_html_bucket_name: {}'.format(target_html_bucket_name))
     print('target_html_object_name: {}'.format(target_html_object_name))
-    message_list  = daily_message.MessageList.from_csv_s3_object(
+    message_list  = database.MessageList.from_csv_s3_object(
         message_list_bucket_name,
         message_list_object_name)
     print('Successfully read message list:\n{}'.format(message_list.message_list_df))
-    selected_message = message_list.next_message()
+    selected_message = daily_message.next_message(message_list)
     print('Selected message: {}'.format(selected_message))
     print('New message list:\n{}'.format(message_list.message_list_df))
     message_list.to_csv_s3_object(
