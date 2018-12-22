@@ -1,3 +1,5 @@
 test_message_list.csv
 index.html
 __pycache__
+*.bat
+venv

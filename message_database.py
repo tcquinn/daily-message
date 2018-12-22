@@ -25,8 +25,12 @@ class MessageDatabaseCSV:
 class MessageDatabaseCSVS3(MessageDatabaseCSV):
     def __init__(
         self,
-        bucket_name,
-        object_name):
+        bucket_name=None,
+        object_name=None):
+        if bucket_name is None:
+            bucket_name = os.environ['MESSAGE_DATABASE_S3_BUCKET_NAME']
+        if object_name is None:
+            object_name = os.environ['MESSAGE_DATABASE_S3_OBJECT_NAME']
         self.bucket_name = bucket_name
         self.object_name = object_name
 
@@ -49,7 +53,9 @@ class MessageDatabaseCSVS3(MessageDatabaseCSV):
 class MessageDatabaseCSVLocal(MessageDatabaseCSV):
     def __init__(
         self,
-        path):
+        path=None):
+        if path is None:
+            path = os.environ['MESSAGE_DATABASE_LOCAL_PATH']
         self.path = path
 
     def get_dataframe(self):
