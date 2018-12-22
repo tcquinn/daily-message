@@ -15,7 +15,9 @@ class MessageDatabaseCSV:
         print('Selectable indices: {}'.format(selectable_indices))
         selected_index = random.choice(selectable_indices)
         print('Selected index: {}'.format(selected_index))
-        selected_message = message_list_df.loc[selected_index, 'body']
+        selected_message = {
+            'body': message_list_df.loc[selected_index, 'body'],
+            'contributor': message_list_df.loc[selected_index, 'contributor']}
         print('Selected message: {}'.format(selected_message))
         message_list_df.loc[selected_index, 'num_times_used'] += 1
         print('New message database:\n{}'.format(message_list_df))
