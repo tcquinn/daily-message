@@ -20,6 +20,7 @@ class MessageDatabaseCSV:
             'contributor': message_list_df.loc[selected_index, 'contributor']}
         print('Selected message: {}'.format(selected_message))
         message_list_df.loc[selected_index, 'num_times_used'] += 1
+        message_list_df.loc[selected_index, 'last_used'] = pd.Timestamp.now()
         print('New message database:\n{}'.format(message_list_df))
         self.put_dataframe(message_list_df)
         return(selected_message)
@@ -41,7 +42,8 @@ class MessageDatabaseCSVS3(MessageDatabaseCSV):
         print('S3 location: {}'.format(s3_location))
         message_list_df = pd.read_csv(
             s3_location,
-            index_col=0)
+            index_col=0,
+            parse_dates = ['last_used'])
         return message_list_df
 
     def put_dataframe(
@@ -63,7 +65,8 @@ class MessageDatabaseCSVLocal(MessageDatabaseCSV):
     def get_dataframe(self):
         message_list_df = pd.read_csv(
             self.path,
-            index_col=0)
+            index_col=0,
+            parse_dates = ['last_used'])
         return message_list_df
 
     def put_dataframe(

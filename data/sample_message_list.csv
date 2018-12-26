@@ -1,11 +1,11 @@
-id,contributor,num_times_used,body
-1,Contributor A,1,This is message 1
-2,Contributor A,2,This is message 2
-3,Contributor A,0,This is message 3
-4,Contributor A,0,This is message 4
-5,Contributor A,0,This is message 5
-6,Contributor B,1,This is message 6
-7,Contributor B,2,This is message 7
-8,Contributor B,0,This is message 8
-9,Contributor B,0,This is message 9
-10,Contributor B,0,This is message 10
+id,num_times_used,last_used,contributor,body
+1,1,12/1/2018 3:00,Contributor A,This is message 1
+2,2,12/2/2018 3:00,Contributor A,This is message 2
+3,0,#N/A,Contributor A,This is message 3
+4,0,#N/A,Contributor A,This is message 4
+5,0,#N/A,Contributor A,This is message 5
+6,1,12/1/2018 3:00,Contributor B,This is message 6
+7,2,12/2/2018 3:00,Contributor B,This is message 7
+8,0,#N/A,Contributor B,This is message 8
+9,0,#N/A,Contributor B,This is message 9
+10,0,#N/A,Contributor B,This is message 10

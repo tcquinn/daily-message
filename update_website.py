@@ -1,5 +1,5 @@
 from message_database import MessageDatabaseCSVS3 as MessageDatabase
-from message_database import MessageDatabaseCSVLocal as MessageDatabase
+# from message_database import MessageDatabaseCSVLocal as MessageDatabase
 from html_template_parser import HTMLTemplateS3 as HTMLTemplate
 # from html_template_parser import HTMLTemplateLocal as HTMLTemplate
 
