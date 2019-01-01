@@ -13,6 +13,7 @@ body {
 
 .contributor {
   text-align: right;
-  font-size: 200%;
+  font-family: 'Fira Sans';
+  font-size: 150%;
   margin-bottom: 150px;
 }
