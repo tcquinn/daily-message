@@ -44,7 +44,8 @@ class MessageDatabaseCSVS3(MessageDatabaseCSV):
         message_list_df = pd.read_csv(
             s3_location,
             index_col=0,
-            parse_dates = ['last_used'])
+            parse_dates = ['last_used'],
+            encoding='utf-8')
         return message_list_df
 
     def put_dataframe(
@@ -52,7 +53,7 @@ class MessageDatabaseCSVS3(MessageDatabaseCSV):
         message_list_df):
         s3 = s3fs.S3FileSystem(anon=False)
         s3_location = self.message_database_bucket_name + '/' + self.message_database_object_name
-        bytes_to_write = message_list_df.to_csv(None).encode()
+        bytes_to_write = message_list_df.to_csv(None).encode('utf-8')
         with s3.open(s3_location, 'wb') as f:
             f.write(bytes_to_write)
 
@@ -68,14 +69,16 @@ class MessageDatabaseCSVLocal(MessageDatabaseCSV):
         message_list_df = pd.read_csv(
             self.message_database_local_path,
             index_col=0,
-            parse_dates = ['last_used'])
+            parse_dates = ['last_used'],
+            encoding='utf-8')
         return message_list_df
 
     def put_dataframe(
         self,
         message_list_df):
         message_list_df.to_csv(
-            self.message_database_local_path)
+            self.message_database_local_path,
+            encoding='utf-8')
 
 class MessageStoreS3:
     def __init__(
