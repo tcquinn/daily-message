@@ -124,7 +124,8 @@ class MessageStoreLocal:
     def get_message(self):
         message_store = open(
             self.message_store_local_path,
-            'r')
+            'r',
+            encoding='utf-8')
         message_string = message_store.read()
         message_store.close()
         message = json.loads(message_string)
@@ -136,6 +137,7 @@ class MessageStoreLocal:
         message_string = json.dumps(message)
         message_store = open(
             self.message_store_local_path,
-            'w')
+            'w',
+            encoding='utf-8')
         message_store.write(message_string)
         message_store.close()
