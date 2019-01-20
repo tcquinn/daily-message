@@ -1,4 +1,4 @@
-import update_website
+import daily_message
 from message_database import MessageDatabaseCSVS3 as MessageDatabase
 # from message_database import MessageDatabaseCSVLocal as MessageDatabase
 from message_database import MessageStoreS3 as MessageStore
@@ -10,7 +10,7 @@ if __name__ == '__main__':
     message_database  = MessageDatabase()
     message_store = MessageStore()
     html_template = HTMLTemplate()
-    update_website.update_website(
+    daily_message.update_website(
         message_database,
         message_store,
         html_template)
