@@ -6,7 +6,7 @@ from message_database import MessageStoreS3 as MessageStore
 from html_template_parser import HTMLTemplateS3 as HTMLTemplate
 # from html_template_parser import HTMLTemplateLocal as HTMLTemplate
 
-def update_website_lambda_handler(event, context):
+def lambda_handler(event, context):
     message_database  = MessageDatabase()
     message_store = MessageStore()
     html_template = HTMLTemplate()
